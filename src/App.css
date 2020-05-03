@@ -24,3 +24,12 @@
   background-color: lightgreen;
   color: black;
 }
+
+.Red {
+  background-color: red;
+}
+
+.Red:hover {
+  background-color: pink;
+  color: black;
+}

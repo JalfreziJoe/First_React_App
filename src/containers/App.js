@@ -23,6 +23,7 @@ class App extends Component {
     ],
     showPeople: false,
     showCockpit: true,
+    changeCounter: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -60,7 +61,17 @@ class App extends Component {
 
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-    this.setState({persons:persons });
+    // setState can use a pass through of the object OR a function. You should use a function when updating app time critical elements - such as a counter)
+    // dont do this EVER this.setState({persons:persons, changeCounter: this.state.changeCounter+1 });
+    //this.setState({persons:persons});
+
+    // best practice for changes that depend on the old state
+    this.setState((prevState, props) => {
+      return {
+        persons:persons,
+        changeCounter: prevState.changeCounter +1
+      };
+    });
   }
 
   deletePersonHandler = (personIndex) => {

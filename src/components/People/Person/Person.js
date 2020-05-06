@@ -3,10 +3,25 @@ import PropTypes from 'prop-types';
 import classes from './Person.css';
 import Aux from '../../../hoc/Auxillary';
 import withClass from '../../../hoc/withClass';
+import AuthContext from '../../../context/auth-context';
 
 
 
 class Person extends Component {
+    constructor(props) {
+        super(props);
+        this.inputElementRef = React.createRef();
+    }
+
+    // React v16 version of accessing the context
+    static contextType = AuthContext;
+
+    componentDidMount() {
+        //this.inputElement.focus();
+        this.inputElementRef.current.focus();
+        console.log(this.context.auth);
+    }
+
     render() {
         console.log('[Person.js] rendering...');
         // return (
@@ -31,9 +46,17 @@ class Person extends Component {
         return (
            // <div className="Person" style={style}>
            <Aux >
-                <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old</p>
-                <p>{this.props.children}</p>
-                <input type="text" onChange={this.props.changed} value={this.props.name} />
+                {this.context.auth ? <p>Logged in</p>:<p>Please login</p>}
+                <p key="a1" onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old</p>
+                <p key="a2">{this.props.children}</p>
+                <input
+                 key="a3"
+                 //older versions of React
+                 //ref={(inputEl) => {this.inputElement = inputEl}}
+                 ref={this.inputElementRef}
+                 type="text"
+                 onChange={this.props.changed}
+                 value={this.props.name} />
             </Aux>
         )
 
@@ -51,6 +74,7 @@ class Person extends Component {
     }
 }
 
+// function property definitions
 Person.propTypes = {
     click: PropTypes.func,
     name: PropTypes.string,

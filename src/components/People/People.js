@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import Person from './Person/Person';
 
+
 class People extends PureComponent {
     //PureComponent does all the checking of props for you.
 
@@ -44,7 +45,8 @@ class People extends PureComponent {
                 name={person.name}
                 age={person.age}
                 key={person.id}
-                changed={(event)=> this.props.changed(event, person.id)} />
+                changed={(event)=> this.props.changed(event, person.id)}
+                 />
             )
         });
     }

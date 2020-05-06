@@ -4,18 +4,44 @@ import classes from './App.css';
 
 import People from '../components/People/People';
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Auxillary';
 
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+  }
+
   state = {
     persons: [
       { id:'asd', name: 'Joe', age:41},
       { id:'qwe', name: 'Claire', age:39},
       { id:'zcx', name: 'Scout', age:7}
     ],
-    showPeople: false
+    showPeople: false,
+    showCockpit: true,
   };
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouleComponentUpdate');
+    return true;
+  }
+  
+  componentDidUpdate() {
+    console.log('[App.js] componentDidUpdate');
+  }
 
   nameChangeHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -51,7 +77,7 @@ class App extends Component {
 
   
   render() {
-
+    console.log('[App.js] render');
     
     let people = null;
     let btnClass = [classes.button];
@@ -81,18 +107,24 @@ class App extends Component {
     
     return (
     
-      <div className={classes.App}>
-        <Cockpit
-          showPeople={this.state.showPeople}
-          persons={this.state.persons}
-          clicked={this.togglePersonsHandler} />
+      <Aux>
+        <button onClick={() => {
+         this.setState({showCockpit: false}); 
+        }}>Remove Cockpit</button>
+        {this.state.showCockpit ? (
+          <Cockpit
+            title={this.props.appTitle}
+            showPeople={this.state.showPeople}
+            personsLength={this.state.persons.length}
+            clicked={this.togglePersonsHandler} />
+        ) : null}
         {people}
           
-      </div>
+      </Aux>
 
     );
     //return React.createElement('div', null, React.createElement('h1', {className: 'App'}, 'does this work'));
   }
 }
 
-export default App;
+export default withClass(App, classes.App);
